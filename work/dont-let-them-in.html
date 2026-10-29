@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Don't Let Them In — Iris Liu</title>
+  <meta name="description" content="Case study: an educational game about checking a warrant under pressure, redesigned through four rounds of playtesting.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css?v=2">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="inner">
+      <a class="site-name" href="../index.html">Iris Liu</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html#work">Work</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Header: title, summary, metadata, cover -->
+    <section class="section cs-header flow">
+      <h1>Don't Let Them In</h1>
+      <p class="summary">An educational game about checking a warrant under pressure, redesigned through four rounds of playtesting.</p>
+      <p class="role"><span class="role-label">My role</span> I worked on the game design throughout, from ideation through four rounds of playtesting. I drew all of the art and designed the UI, including the phone.</p>
+
+      <dl class="meta wide">
+        <div>
+          <dt>Role</dt>
+          <dd>
+            <ul>
+              <li>UI design</li>
+              <li>All art</li>
+              <li>Game design, ideation, and playtesting</li>
+            </ul>
+          </dd>
+        </div>
+        <div>
+          <dt>Team</dt>
+          <dd>5 (Design of Educational Games, Carnegie Mellon)</dd>
+        </div>
+        <div>
+          <dt>Timeline</dt>
+          <dd>Mar – May 2026</dd>
+        </div>
+        <div>
+          <dt>Course</dt>
+          <dd>05-418 Design of Educational Games</dd>
+        </div>
+      </dl>
+
+      <figure class="wide cs-cover">
+        <img src="../images/dlti/cover.png" width="1434" height="787" alt="Gameplay: a hand-drawn vampire agent at a villager's door says 'Hello villager. We have a warrant to come in,' drawn in grayscale with red accents." fetchpriority="high">
+        <figcaption>An encounter at a villager's door: a vampire agent claims to have a warrant to come in.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section flow" aria-labelledby="problem">
+      <h2 id="problem">The problem</h2>
+      <p>Most people don't know that the arrest warrants ICE usually carries don't allow entry into a home, or how to tell a valid search warrant from an invalid one. The documents are full of legal language, and people have to judge them in a tense moment at their own door.</p>
+    </section>
+
+    <section class="section band flow" aria-labelledby="goals">
+      <h2 id="goals">What we wanted players to learn</h2>
+      <ul class="bullets">
+        <li>Check a warrant against four things: signature, date, address, and name.</li>
+        <li>Understand that consenting to entry gives agents grounds to come in.</li>
+        <li>Record encounters whenever it's safe to.</li>
+      </ul>
+    </section>
+
+    <section class="section flow" aria-labelledby="decisions">
+      <h2 id="decisions">Key decisions</h2>
+      <p>Four rounds of playtesting reshaped the game. For each decision: what we started with, what playtesters ran into, and what we changed.</p>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">1</span><span>An allegory instead of realism</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>A realistic visual novel. It was hard to balance with our learning goals and heavy to play.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>A village run by bureaucratic vampires. More creative control and less demoralizing, while the rules still follow real U.S. law.</p>
+        </div>
+      </div>
+      <figure class="wide">
+        <div class="grid grid-2">
+          <img src="../images/dlti/sketch-1.png" width="834" height="1204" loading="lazy" alt="Collage of early sketches in blue pencil: an officer telling a driver 'you'll have to let us search your car' and a rough neighborhood map with speech bubbles, alongside screenshots of other narrative games used as style references.">
+          <img src="../images/dlti/sketch-2.png" width="801" height="1130" loading="lazy" alt="Early sketch of a police officer at the door holding a paper, with the dialogue 'open up, it's the police,' alongside screenshots of pixel-art games used as references for dialogue and map views.">
+        </div>
+        <figcaption>Sketches for our first, realistic pitch, collaged with games we used as references.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">2</span><span>Reframing the player's role</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>Players were a vampire employee. Playtesters were confused, and wanted to belong to the community they were protecting.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>Players are a neighborhood watch member, on the side of the villagers.</p>
+        </div>
+      </div>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">3</span><span>Replacing "combustion" with a phone</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>Reporting a vampire made it combust on the spot. Playtesters found it jarring, and it went against our message about safe intervention.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>I designed a phone. Players record encounters, and their watch group texts feedback in the moment, explaining what was or wasn't a violation.</p>
+        </div>
+      </div>
+      <figure class="wide">
+        <div class="grid grid-2 assets">
+          <img src="../images/dlti/fire1.png" width="1000" height="1000" loading="lazy" alt="Hand-drawn flame icon: a white flame outlined in black with a smaller red flame inside.">
+          <img src="../images/dlti/fire2.png" width="1000" height="1000" loading="lazy" alt="Hand-drawn flame icon: a red flame outlined in black with a white flame inside.">
+        </div>
+        <figcaption>Fire assets I drew for the original "combustion" mechanic, which we playtested and then replaced with the phone.</figcaption>
+      </figure>
+      <figure class="wide">
+        <img src="../images/dlti/phone-feedback.png" width="1433" height="784" loading="lazy" alt="The in-game phone during an encounter, showing texts from the watch group: 'You correctly identified a violation. That warrant was missing a signature,' and 'Good eye. This is an arrest warrant, not a search warrant.'">
+        <figcaption>The phone: the watch group explains each call right away, like a missing signature or an arrest warrant posing as a search warrant.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">4</span><span>Encounters that wait for the player</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>Encounters played out in real time to create time pressure. Players missed dialogue or arrived mid-conversation.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>Encounters start when the player arrives. Unvisited ones resolve on their own, which keeps the time pressure.</p>
+        </div>
+      </div>
+      <figure class="wide">
+        <img src="../images/dlti/map.png" width="1452" height="780" loading="lazy" alt="The village map: hand-drawn houses connected by roads, a red warning sign over a vampire at one house, a clock in the corner, a search warrant reference card at the bottom left, and the phone at the bottom right.">
+        <figcaption>The village map. A warning marks a house where an encounter is waiting; the warrant rules stay pinned in the corner.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">5</span><span>Warrants with something to catch</span></h3>
+      <p>A warrant can be invalid in several ways, so we wrote variations, each with a different violation to find. The resident's name and address sit on screen right under the warrant, and the rules for a valid search warrant stay on the map. Players practice comparing the document against what's in front of them, instead of memorizing.</p>
+      <div class="wide grid warrants">
+        <figure>
+          <img src="../images/dlti/warrant-1.png" width="1435" height="782" loading="lazy" alt="Encounter screen: a vampire agent holds up a search warrant from Batty Banks District Court for Cory Marks at 12 Alucard Court; the judge's signature line is blank. The resident's name and address appear below the warrant.">
+          <figcaption>A court search warrant. The name and address match, but the judge's signature line is blank.</figcaption>
+        </figure>
+        <figure>
+          <img src="../images/dlti/warrant-2.png" width="1432" height="788" loading="lazy" alt="Encounter screen: a warrant 'From the Office of VILE' authorizing the arrest of Shawn Nelson, signed by a V.I.L.E. officer, not a judge, with no address. The resident's address, 55 Nosferatu Street, appears below.">
+          <figcaption>A V.I.L.E. arrest warrant signed by an officer, not a judge. It doesn't allow entry into the home.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section band flow" aria-labelledby="art">
+      <h2 id="art">Art direction</h2>
+      <p>I drew all the art by hand in grayscale with red as the only color. It kept a large set of assets cohesive, was fast to produce, and the red fit the vampire theme.</p>
+      <figure class="wide">
+        <img src="../images/dlti/title.png" width="1433" height="790" loading="lazy" alt="Title screen: the hand-lettered words 'Don't Let Them In' beside a shadowy vampire holding up a warrant, in black, gray, and red.">
+        <figcaption>The title screen: grayscale linework with red as the only color.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section flow" aria-labelledby="final">
+      <h2 id="final">Final design</h2>
+      <p>A day in the game: pick a house on the map, watch the encounter, and check the warrant against the resident's name and address. Then record or report. The phone responds right away, and the daily report sums up what you caught and what you missed.</p>
+      <figure class="wide">
+        <img src="../images/dlti/daily-report.png" width="1429" height="784" loading="lazy" alt="End-of-day screen: a message from the neighborhood watch beside a daily report listing villagers taken, vampires reported with correct, incorrect, and missed violations, and vampires recorded.">
+        <figcaption>The daily report: correct, incorrect, and missed violations, next to a message from the watch.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section flow" aria-labelledby="change">
+      <h2 id="change">What I'd change</h2>
+      <ul class="bullets">
+        <li><strong>Polish the visuals.</strong> Clean up the phone UI, and add more characters and visual variety.</li>
+        <li><strong>Continue the story.</strong> We sketched a longer arc. At first, it's mostly villagers making mistakes, not V.I.L.E. You share your recordings with the community, so villagers stop making as many. That makes V.I.L.E. more desperate, and agents start actually breaking the rules, which you report, building toward reform or enforcement. That's where we wanted to get to, but it wasn't in scope for a project built in a couple of weeks.</li>
+      </ul>
+
+      <p class="next"><a href="esme.html">Next case study: ESME →</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner">
+      <p>Designed by me, built with Claude Code.</p>
+      <ul>
+        <li><a href="mailto:irisliu@andrew.cmu.edu">Email</a></li>
+        <li><a href="https://www.linkedin.com/in/iris-liu-258709253">LinkedIn</a></li>
+        <li><a href="https://github.com/liu-iris">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ESME — Iris Liu</title>
+  <meta name="description" content="Case study: designing ESME, an AI TA for the self-paced Programming for Lovers course that guides students instead of handing out answers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css?v=2">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="inner">
+      <a class="site-name" href="../index.html">Iris Liu</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html#work">Work</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Header: title, summary, metadata, cover -->
+    <section class="section cs-header flow">
+      <h1>ESME: an AI TA students would actually want to use</h1>
+      <p class="summary">How we designed an AI helper for a self-paced programming course without letting it hand out answers.</p>
+      <p class="role"><span class="role-label">My role</span> I led all of the research, from competitive analysis to think-alouds, and generated the insights that shaped ESME. I also designed the interactions and UI, and built the hi-fi prototype.</p>
+
+      <dl class="meta wide">
+        <div>
+          <dt>Role</dt>
+          <dd>
+            <ul>
+              <li>Research lead (competitive analysis, contextual inquiry, think-aloud testing)</li>
+              <li>Interaction and UI design</li>
+              <li>Built the hi-fi prototype in Google AI Studio</li>
+            </ul>
+          </dd>
+        </div>
+        <div>
+          <dt>Team</dt>
+          <dd>5 (HCI Capstone, Carnegie Mellon)</dd>
+        </div>
+        <div>
+          <dt>Timeline</dt>
+          <dd>Jan – May 2026</dd>
+        </div>
+        <div>
+          <dt>Client</dt>
+          <dd>Phillip Compeau, Programming for Lovers (8,200+ learners)</dd>
+        </div>
+      </dl>
+
+      <figure class="wide cs-cover">
+        <img src="../images/esme/cover.png" width="2048" height="1147" alt="The final ESME design: a chat panel titled 'Esme - Your P4L assistant' open beside the course's Python coding sandbox, responding to a 'check my code' request." fetchpriority="high">
+        <figcaption>ESME on a course page, open next to the coding sandbox where students most often get stuck.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section flow" aria-labelledby="problem">
+      <h2 id="problem">The problem</h2>
+      <p>Programming for Lovers is self-paced. When students get stuck, there's no TA to ask, so they turn to ChatGPT, which gives them the answer. Phillip wanted AI support that helped without removing the struggle that makes learning stick.</p>
+    </section>
+
+    <section class="section band flow" aria-labelledby="research">
+      <h2 id="research">Research</h2>
+      <p>I started with a competitive analysis of 7 AI learning tools, then ran contextual inquiry with 5 students.</p>
+
+      <div class="insight">
+        <p class="insight-label">Key insight from research</p>
+        <p class="insight-statement">Students don't trust chatbots, because chatbots dump answers.</p>
+        <p>One student was annoyed that she had to keep reminding ChatGPT not to give her the answer. Another avoided chatbots entirely because of hallucinations. A better chatbot wouldn't be enough. ESME had to earn trust by helping students think, not by doing the work for them.</p>
+      </div>
+
+      <p>I also watched how students actually learn. All 5 relied on example code and pseudocode to get started.</p>
+      <p>They also wanted what a TA offers, like deeper questions and real-world applications of the code, not more of the same course content.</p>
+      <p class="principle">So the goal was to fit into how students already learn and work, instead of asking them to learn a new tool.</p>
+    </section>
+
+    <section class="section flow" aria-labelledby="early-design">
+      <h2 id="early-design">Early design</h2>
+      <p>We sketched where ESME should live on the course page, then embedded it into mid-fi course pages to try out entry points.</p>
+
+      <figure class="wide">
+        <div class="grid grid-3">
+          <img src="../images/esme/slide16_1.png" width="1639" height="1162" loading="lazy" alt="Hand-drawn sketches of four page layouts, comparing a pop-up, a side tab, and a right-side panel for ESME.">
+          <img src="../images/esme/slide16_2.png" width="1813" height="1190" loading="lazy" alt="Lo-fi sketch of another layout option for placing ESME on the course page.">
+          <img src="../images/esme/slide16_3.png" width="1338" height="1197" loading="lazy" alt="Lo-fi sketch of a third layout option for placing ESME on the course page.">
+        </div>
+        <figcaption>Lo-fi layout sketches. We chose a right-side panel so reading flow stays on the left.</figcaption>
+      </figure>
+
+      <figure class="wide">
+        <div class="grid grid-2">
+          <img src="../images/esme/slide18_1.png" width="1635" height="895" loading="lazy" alt="Mid-fi mockup of a course page with ESME embedded in the right sidebar.">
+          <img src="../images/esme/slide18_2.png" width="1624" height="891" loading="lazy" alt="Mid-fi mockup testing a different placement for ESME's entry points on the course page.">
+        </div>
+        <figcaption>Mid-fi: embedding ESME into the course page and testing where entry points should go.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section band flow" aria-labelledby="testing">
+      <h2 id="testing">What testing changed</h2>
+      <p>I ran think-alouds with 6 more students. We'd placed ESME in a quiet right sidebar so it wouldn't disrupt reading, but students following their normal routine mostly didn't notice it.</p>
+
+      <div class="insight">
+        <p class="insight-label">Key insight from testing</p>
+        <p class="insight-statement">The first interaction is the barrier.</p>
+        <p>Students who tried ESME warmed up quickly. Even skeptical ones acknowledged it was useful. The hard part wasn't convincing students. It was getting them to find ESME in the first place.</p>
+      </div>
+
+      <p>We proposed ways to get noticed without being disruptive: a cue when a student uses the sandbox or highlights text, a small intro animation, a first-run tutorial, and shorter responses, since students skipped long ones.</p>
+      <figure class="wide">
+        <img src="../images/esme/slide31_1.png" width="2048" height="1015" loading="lazy" alt="Course page with ESME introduced as 'Meet Esme, your TA for this course' in the right sidebar, below the navigation and beside the lesson video.">
+        <figcaption>The right-side panel: unobtrusive, but most students didn't notice it.</figcaption>
+      </figure>
+
+      <div class="insight">
+        <p class="insight-label">Key insight from testing</p>
+        <p class="insight-statement">Students didn't know what ESME could do.</p>
+        <p>ESME could write example code, but a student facing an empty chat box wouldn't think to ask. So we built the prompts in as buttons.</p>
+      </div>
+    </section>
+
+    <section class="section flow" aria-labelledby="decisions">
+      <h2 id="decisions">Key decisions</h2>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">1</span><span>A TA, not a chatbot</span></h3>
+      <p>Because students distrust chatbots, we named and presented ESME as a course TA rather than "AI."</p>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">2</span><span>Guidance instead of answers</span></h3>
+      <p>Wrong answers lead to hints, with "give me a little help," "switch question," and "show correct answer" as separate choices. Students control how much help they get.</p>
+      <figure class="wide">
+        <div class="grid grid-4 panels">
+          <img src="../images/esme/slide36_1.png" width="597" height="770" loading="lazy" alt="ESME chat panel showing a multiple-choice question about list slicing, with a 'switch question' link, and the student's selected answer.">
+          <img src="../images/esme/slide36_2.png" width="609" height="778" loading="lazy" alt="ESME responding to a wrong answer with a hint instead of the solution.">
+          <img src="../images/esme/slide36_3.png" width="610" height="778" loading="lazy" alt="ESME offering separate choices: give me a little help, switch question, or show correct answer.">
+          <img src="../images/esme/slide36_4.png" width="626" height="783" loading="lazy" alt="ESME showing the correct answer with an explanation after the student chooses to see it.">
+        </div>
+        <figcaption>A wrong answer leads to hints first; the student chooses when to see the answer.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">3</span><span>Visible starting points</span></h3>
+      <p>Since testers didn't know what ESME could do, we showed them. Three preset options ("Explain concept," "Test my knowledge," "Code example") match what students already practiced most, including the example code they relied on. In testing, these built-in buttons were the most-used feature.</p>
+      <figure class="wide">
+        <div class="grid grid-3 panels">
+          <img src="../images/esme/slide35_1.png" width="528" height="515" loading="lazy" alt="ESME chat panel after the student picks 'Explain concept', showing a short explanation.">
+          <img src="../images/esme/slide35_2.png" width="531" height="573" loading="lazy" alt="ESME chat panel after the student picks 'Test my knowledge', showing a practice question.">
+          <img src="../images/esme/slide35_3.png" width="542" height="512" loading="lazy" alt="ESME chat panel after the student picks 'Code example', showing a code snippet.">
+        </div>
+        <figcaption>The three preset options: explain a concept, test my knowledge, see a code example.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">4</span><span>Help where students get stuck</span></h3>
+      <p>Entry points sit under the coding sandbox ("Check my code"), at the end of chapters, and where new concepts are introduced, not as constant pop-ups.</p>
+      <figure class="wide">
+        <img src="../images/esme/slide32_1.png" width="2048" height="1147" loading="lazy" alt="Course page with a 'Check my code' button under the Python sandbox and ESME's panel open on the right, reviewing the student's code.">
+        <figcaption>"Check my code" under the sandbox: ESME reads the student's code directly.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section band flow" aria-labelledby="outcome">
+      <h2 id="outcome">Outcome</h2>
+      <p>A working version on the course's staging site. It uses retrieval to ground answers in course content, responds in 10 seconds or less, and ends each answer with a follow-up question. We handed it off to the team continuing development over the summer.</p>
+      <figure class="wide">
+        <img src="../images/esme/slide40_1.png" width="2048" height="1307" loading="lazy" alt="Diagram: a student's question goes to a retrieval system that searches a vector store of course documents; the retrieved context and the question go to the AI model, which returns an answer grounded in course materials.">
+        <figcaption>How ESME grounds answers in course materials.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section flow" aria-labelledby="next-steps">
+      <h2 id="next-steps">What I'd do next</h2>
+      <p>We tested with 11 students in short sessions, so we don't know yet whether ESME improves learning. Next I'd measure what happens over a full unit: how many students come back to ESME, how much they rely on "show correct answer," and how they do on later exercises.</p>
+
+      <p class="next"><a href="biomotivate.html">Next case study: Biomotivate →</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner">
+      <p>Designed by me, built with Claude Code.</p>
+      <ul>
+        <li><a href="mailto:irisliu@andrew.cmu.edu">Email</a></li>
+        <li><a href="https://www.linkedin.com/in/iris-liu-258709253">LinkedIn</a></li>
+        <li><a href="https://github.com/liu-iris">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

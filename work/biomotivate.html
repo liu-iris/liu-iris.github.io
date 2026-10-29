@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Biomotivate — Iris Liu</title>
+  <meta name="description" content="Case study: turning a dense, static patient journey map about substance use recovery into an interactive website for web and mobile.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css?v=2">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="inner">
+      <a class="site-name" href="../index.html">Iris Liu</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html#work">Work</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Header: title, summary, metadata, cover -->
+    <section class="section cs-header flow">
+      <h1>Biomotivate: an interactive patient journey map</h1>
+      <p class="summary">Turning a dense, static journey map about substance use recovery into an interactive website for web and mobile.</p>
+      <p class="role"><span class="role-label">My role</span> I iteratively designed the screens in Figma, built front-end pieces in HTML, and created a cohesive visual style. I also brought in what I knew from cognitive science, like attention span and how affordances work, to shape both the content and the design.</p>
+
+      <dl class="meta wide">
+        <div>
+          <dt>Role</dt>
+          <dd>
+            <ul>
+              <li>UX and visual design</li>
+              <li>Front-end development</li>
+            </ul>
+          </dd>
+        </div>
+        <div>
+          <dt>Team</dt>
+          <dd>Multidisciplinary design team</dd>
+        </div>
+        <div>
+          <dt>Timeline</dt>
+          <dd>Summer 2024</dd>
+        </div>
+        <div>
+          <dt>Client</dt>
+          <dd>Biomotivate, a Pittsburgh behavioral health company</dd>
+        </div>
+      </dl>
+
+      <figure class="wide cs-cover">
+        <img src="../images/biomotivate/final-screen.png" width="2000" height="1110" alt="The final site: stage 2 of Sally's journey, with a timeline of events and emotion bubbles on the left, a stage summary, an iceberg of her known and hidden emotions, and an interactive brain diagram showing the thalamus." fetchpriority="high">
+        <figcaption>One stage of Sally's journey: events and feelings on the timeline, her emotions as an iceberg, and the brain regions involved.</figcaption>
+      </figure>
+
+      <p><a href="https://bio-journey-map-site.webflow.io/">Explore the live site →</a></p>
+    </section>
+
+    <section class="section flow" aria-labelledby="problem">
+      <h2 id="problem">The problem</h2>
+      <p>A previous intern had mapped one patient's journey through substance use disorder and recovery: her emotions, the brain changes behind them, and the events of her life across five stages. The map was rich, but static and dense. Our task was to turn it into an interactive website that works on web and mobile.</p>
+      <figure class="wide">
+        <img src="../images/biomotivate/original-map.webp" width="1920" height="1891" loading="lazy" alt="The original static journey map, 'Mapping Patient Journeys': rows of emotion icebergs, a zigzagging line of events and feelings, five brain diagrams, staff members, and pain points, all on one dense poster.">
+        <figcaption>The starting point: everything about Sally's journey on one poster.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section band flow" aria-labelledby="challenges">
+      <h2 id="challenges">What made it hard</h2>
+      <ul class="bullets">
+        <li>How do we present a nonlinear story clearly?</li>
+        <li>How do we encourage people to explore every path?</li>
+        <li>How do we build empathy for people recovering from addiction?</li>
+        <li>How do we include all the information without overwhelming people?</li>
+      </ul>
+    </section>
+
+    <section class="section flow" aria-labelledby="decisions">
+      <h2 id="decisions">Key decisions</h2>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">1</span><span>A brain you explore, not read</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>A static brain diagram with every region and its notes labeled at once. Dense, and hard to follow without a neuroscience background.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>An interactive menu. Click a numbered region to learn what it does and how it changes through addiction and recovery. We kept the original information and added context.</p>
+        </div>
+      </div>
+      <figure class="wide">
+        <div class="grid compare">
+          <img src="../images/biomotivate/brain-old.png" width="1461" height="989" loading="lazy" alt="Before: a brain diagram with eleven regions labeled at once, several with small bullet-point notes beside them.">
+          <img src="../images/biomotivate/brain-new.png" width="700" height="1191" loading="lazy" alt="After: a smaller brain with ten numbered callouts; the cingulated cortex is selected, and its description appears in a box above.">
+        </div>
+        <figcaption>Before and after: every label at once, versus one region at a time.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">2</span><span>Keeping the emotions in</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>Our first timeline dropped Sally's emotions to cut clutter.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>I pushed to bring them back, because the point of the map was empathy. The final timeline shows how Sally felt next to what happened to her.</p>
+        </div>
+      </div>
+      <figure class="wide">
+        <div class="grid grid-2 panels">
+          <img src="../images/biomotivate/timeline-before.png" width="487" height="1245" loading="lazy" alt="Before: a timeline for Road 1 listing events only, such as starting suboxone, missing appointments, relapsing, and being arrested.">
+          <img src="../images/biomotivate/timeline-after.png" width="362" height="900" loading="lazy" alt="After: the same timeline with emotion bubbles added, such as 'She's afraid of losing freedom, autonomy, privacy' and 'In pain from withdrawal effects.'">
+        </div>
+        <figcaption>Events only, versus events with how Sally felt.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">3</span><span>Teaching people how to read the map</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>People landed straight in the timeline. In user testing, they were still confused by how much information there was. As the people building it, we hadn't seen that.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>Intro screens that walk people through each part of the map, the emotion iceberg, the brain, and the timeline, before they start.</p>
+        </div>
+      </div>
+      <figure class="wide">
+        <img src="../images/biomotivate/brain-intro.png" width="2000" height="1087" loading="lazy" alt="Intro screen titled 'A Brain': it explains that this section highlights brain regions tied to Sally's experiences and that people can click any circled number, with a small example brain and one region's description.">
+        <figcaption>An intro screen explains the brain section, with a small working example, before the journey starts.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">4</span><span>Branching paths that invite exploring</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>We tried several branching menus for Sally's three possible roads to recovery. In many, it wasn't clear how to use them or where each road led.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>An animated view that shows the roads are separate, and invites people to explore the others when they reach the branch or the end of a road.</p>
+        </div>
+      </div>
+      <figure class="wide">
+        <div class="grid grid-2">
+          <img src="../images/biomotivate/branch-v1.png" width="1089" height="596" loading="lazy" alt="Early iteration: three curved roads labeled Road 1, 2, and 3 fanning out from one line, with an explanation box.">
+          <img src="../images/biomotivate/branch-v2.png" width="1012" height="742" loading="lazy" alt="Early iteration: a timeline with two side branches labeled 'Explore: Road 2' and 'Explore: Road 3.'">
+        </div>
+        <figcaption>Two of the branching designs we tried before the final version.</figcaption>
+      </figure>
+      <figure class="wide">
+        <img src="../images/biomotivate/final-branch.png" width="2000" height="1116" loading="lazy" alt="Final branching screen: text introduces three roads to recovery 'like a choose your own adventure book,' an animated diagram highlights Road 1, and three colored buttons let people pick a road.">
+        <figcaption>The final version: one road highlighted at a time, with a button for each.</figcaption>
+      </figure>
+
+      <h3 class="decision"><span class="num" aria-hidden="true">5</span><span>One stage at a time on mobile</span></h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>On desktop, the timeline, iceberg, and brain sit side by side. That doesn't fit on a phone.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>The iceberg and brain become part of the timeline, each in its own space. We debated splitting the timeline up, but kept each stage distinct and in order.</p>
+        </div>
+      </div>
+      <figure class="wide figure-narrow">
+        <img src="../images/biomotivate/mobile.png" width="587" height="1224" loading="lazy" alt="Mobile view: the timeline runs down the screen with events and emotion bubbles, and the emotion iceberg appears inline below them.">
+        <figcaption>On a phone, the iceberg and brain sit inside the timeline.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section band flow" aria-labelledby="change">
+      <h2 id="change">What I'd change</h2>
+      <p>More interactivity on the timeline. For example, hovering over a point could reveal Sally's emotion there, instead of showing every emotion at once.</p>
+    </section>
+
+    <section class="section flow">
+      <p class="next"><a href="dont-let-them-in.html">Next case study: Don't Let Them In →</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner">
+      <p>Designed by me, built with Claude Code.</p>
+      <ul>
+        <li><a href="mailto:irisliu@andrew.cmu.edu">Email</a></li>
+        <li><a href="https://www.linkedin.com/in/iris-liu-258709253">LinkedIn</a></li>
+        <li><a href="https://github.com/liu-iris">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

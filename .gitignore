@@ -1,0 +1,12 @@
+# Source exports; the site uses the copies in images/
+esme_portfolio_images/
+graphic design/
+DLTM_*.PNG
+
+.claude/
+
+# Resume source versions; the site serves resume.pdf
+iris_2026_*.pdf
+
+# Full-size photo original; the site uses images/me.jpg
+images/kIMG_1049.JPG
