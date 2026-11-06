@@ -10,3 +10,6 @@ iris_2026_*.pdf
 
 # Full-size photo original; the site uses images/me.jpg
 images/kIMG_1049.JPG
+
+# Layout mockups, not part of the site
+desk-mockups/

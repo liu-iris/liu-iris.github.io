@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOCAI — Iris Liu</title>
+  <meta name="description" content="Case study: building a learning-science codebook, validating it with people, and scaling it to 58,000 AI tutor messages with a local LLM, without trusting the model blindly.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css?v=12">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="inner">
+      <a class="site-name" href="../index.html">Iris Liu</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html#work">Work</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../resume.pdf">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Header: title, summary, role, metadata, cover -->
+    <section class="section cs-header flow">
+      <h1>LOCAI: can an LLM read tutoring chats the way people do?</h1>
+      <p class="summary">How we built a learning-science codebook, checked it with people, and scaled it to 58,000 AI tutor messages with a local LLM, without trusting the model blindly.</p>
+      <p class="role"><span class="role-label">My role</span> I led the research and development. I built the codebook, designed the human review procedure, built the LLM pipeline, and synthesized the results.</p>
+
+      <dl class="meta wide">
+        <div>
+          <dt>Role</dt>
+          <dd>
+            <ul>
+              <li>Development lead</li>
+              <li>Codebook and review procedure</li>
+              <li>LLM pipeline (Python, local model)</li>
+              <li>Synthesis</li>
+            </ul>
+          </dd>
+        </div>
+        <div>
+          <dt>Team</dt>
+          <dd>5 (METALS Capstone, Carnegie Mellon)</dd>
+        </div>
+        <div>
+          <dt>Timeline</dt>
+          <dd>Jan – Aug 2026</dd>
+        </div>
+        <div>
+          <dt>Client</dt>
+          <dd>Learnvia, Calculus I courseware with a built-in AI tutor</dd>
+        </div>
+      </dl>
+
+      <figure class="wide cs-cover">
+        <img src="../images/locai/cover.png" width="2000" height="1110" alt="Diagram of the confusion loop: a learner cycles between signaling confusion, repeating input, and asking for the solution. The tutor's response is the intervention point: direct answering or no clear next step reinforces the loop, while prompting the next step, scaffolding, and encouraging support recovery and re-engagement." fetchpriority="high">
+        <figcaption>Stuck learners loop, and the tutor's next move decides whether they get out.</figcaption>
+      </figure>
+
+      <p><a href="https://github.com/liu-iris/llm-qualitative-coding">See the pipeline and codebook on GitHub →</a></p>
+    </section>
+
+    <section class="section flow" aria-labelledby="problem">
+      <h2 id="problem">The problem</h2>
+      <p>Calculus I is where many students decide whether to stay in STEM. Learnvia's courseware includes an AI tutor for moments when no instructor or classmate is around. But the tutor isn't scripted, so nobody could say when it supported productive struggle and when it quietly did the thinking for the student.</p>
+      <p>Answering that meant reading what actually happened across 9,787 tutoring conversations. We focused on exchanges with at least four messages, where there was enough back-and-forth to see struggle and recovery. That left about 5,300 conversations and 58,000 messages. That's far too many to code by hand, and the transcripts are protected student records, so they couldn't be sent to a cloud AI service.</p>
+    </section>
+
+    <section class="section band flow" aria-labelledby="approach">
+      <h2 id="approach">The approach</h2>
+      <p>Trust the model only where it agrees with people. People define and test the codes first. The LLM scales them up. Every code is checked against human labels before anything is analyzed.</p>
+      <ol class="steps wide">
+        <li><span class="num" aria-hidden="true">1</span><h3>Build the codebook</h3><p>Open-code real conversations, then calibrate until people agree.</p></li>
+        <li><span class="num" aria-hidden="true">2</span><h3>Build the pipeline</h3><p>Rewrite each code for a model, and run a local LLM over all 58,000 messages.</p></li>
+        <li><span class="num" aria-hidden="true">3</span><h3>Validate every code</h3><p>Compare the model's labels to a human gold standard, and read where they disagree.</p></li>
+        <li><span class="num" aria-hidden="true">4</span><h3>Analyze carefully</h3><p>Group exchanges into transition states, with checks for who gets which tutor moves.</p></li>
+        <li><span class="num" aria-hidden="true">5</span><h3>Synthesize</h3><p>Turn the patterns that held up into directions for the tutor.</p></li>
+      </ol>
+    </section>
+
+    <section class="section flow" aria-labelledby="codebook">
+      <h2 id="codebook">1. Building the codebook</h2>
+      <p>Everything traces back to two ideas from learning science. <strong>Productive struggle</strong> is effort spent making sense of a problem just beyond reach. <strong>Instructional effectiveness</strong> is help that builds a learner's thinking instead of replacing it. Each message gets coded on both the good and the bad side.</p>
+      <div class="quad wide">
+        <div>
+          <h3>Productive struggle <span class="muted">· learner</span></h3>
+          <p>Attempts an answer, follows up with a question, works the tutor's feedback into a revision.</p>
+        </div>
+        <div>
+          <h3>Unproductive struggle <span class="muted">· learner</span></h3>
+          <p>Repeats input without revising, signals confusion, asks for the solution.</p>
+        </div>
+        <div>
+          <h3>Instructional effectiveness <span class="muted">· tutor</span></h3>
+          <p>Prompts the next step, breaks the problem down, offers encouragement.</p>
+        </div>
+        <div>
+          <h3>Instructional ineffectiveness <span class="muted">· tutor</span></h3>
+          <p>Gives the answer outright, leaves the next step unclear, ignores the learner's attempt.</p>
+        </div>
+      </div>
+      <p>We built it in three rounds. Open coding on 125 lines showed what learners and tutors actually do, then calibration and reliability testing on 279 more lines continued until raters agreed.</p>
+
+      <h3>A simpler codebook was a more reliable one</h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>Many fine-grained codes, several of them rare. Raters disagreed most on what counted as unhelpful tutoring (agreement 0.43).</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>We merged rare codes into broader ones and coded more examples. Agreement rose on every construct and cleared our 0.6 target on all four.</p>
+        </div>
+      </div>
+      <div class="db wide">
+        <p class="db-legend" aria-hidden="true"><span class="db-key first"></span>First pass <span class="db-key final"></span>Second pass <span class="db-key target"></span>Target (0.6)</p>
+        <h3 class="db-title">Agreement between human coders</h3>
+        <ul class="db-rows">
+          <li title="Instructional effectiveness: 0.92 first pass, 0.96 second pass">
+            <span class="db-label">Instructional effectiveness</span>
+            <span class="db-track" role="img" aria-label="0.92 first pass, 0.96 second pass"><span class="db-range" style="left:92%;width:4%"></span><span class="db-dot first" style="left:92%"></span><span class="db-dot final" style="left:96%"></span></span>
+            <span class="db-vals">0.92 → <strong>0.96</strong></span>
+          </li>
+          <li title="Productive struggle: 0.60 first pass, 0.82 second pass">
+            <span class="db-label">Productive struggle</span>
+            <span class="db-track" role="img" aria-label="0.60 first pass, 0.82 second pass"><span class="db-range" style="left:60%;width:22%"></span><span class="db-dot first" style="left:60%"></span><span class="db-dot final" style="left:82%"></span></span>
+            <span class="db-vals">0.60 → <strong>0.82</strong></span>
+          </li>
+          <li title="Unproductive struggle: 0.70 first pass, 0.81 second pass">
+            <span class="db-label">Unproductive struggle</span>
+            <span class="db-track" role="img" aria-label="0.70 first pass, 0.81 second pass"><span class="db-range" style="left:70%;width:11%"></span><span class="db-dot first" style="left:70%"></span><span class="db-dot final" style="left:81%"></span></span>
+            <span class="db-vals">0.70 → <strong>0.81</strong></span>
+          </li>
+          <li title="Instructional ineffectiveness: 0.43 first pass, 0.67 second pass">
+            <span class="db-label">Instructional ineffectiveness</span>
+            <span class="db-track" role="img" aria-label="0.43 first pass, 0.67 second pass"><span class="db-range" style="left:43%;width:24%"></span><span class="db-dot first" style="left:43%"></span><span class="db-dot final" style="left:67%"></span></span>
+            <span class="db-vals">0.43 → <strong>0.67</strong></span>
+          </li>
+        </ul>
+        <div class="db-axis" aria-hidden="true"><span class="db-axis-track"><span style="left:0%">0</span><span style="left:20%">0.2</span><span style="left:40%">0.4</span><span style="left:60%">0.6</span><span style="left:80%">0.8</span><span style="left:100%">1.0</span></span></div>
+        <details>
+          <summary>Show as a table</summary>
+          <table>
+            <thead><tr><th scope="col">Construct</th><th scope="col">First pass</th><th scope="col">Second pass</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Instructional effectiveness</th><td>0.92</td><td>0.96</td></tr>
+              <tr><th scope="row">Productive struggle</th><td>0.60</td><td>0.82</td></tr>
+              <tr><th scope="row">Unproductive struggle</th><td>0.70</td><td>0.81</td></tr>
+              <tr><th scope="row">Instructional ineffectiveness</th><td>0.43</td><td>0.67</td></tr>
+            </tbody>
+          </table>
+        </details>
+        <p class="db-note">Agreement is Krippendorff's alpha across raters, on 279 hand-coded lines.</p>
+      </div>
+    </section>
+
+    <section class="section band flow" aria-labelledby="pipeline">
+      <h2 id="pipeline">2. Building the pipeline</h2>
+      <p>A codebook written for people isn't precise enough for a model. I rewrote each code as its own document with a tight definition, what does and doesn't count, and invented examples, so no real student text ended up in the prompts.</p>
+      <h3>Privacy by design</h3>
+      <p>The transcripts never left our machines. I built the pipeline around a local open model instead of a cloud service, which also meant designing for a slower, smaller model. Requests run in parallel batches, and every result is saved as it finishes, so a multi-day run can pick up where it stopped.</p>
+      <h3>One question at a time</h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>The model applied the whole codebook to each conversation at once, the way a person would. With this many codes, it was too slow for thousands of conversations.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>Each call asks one yes-or-no question about one code. It's faster, more accurate, and much easier to check and fix when a code goes wrong.</p>
+        </div>
+      </div>
+      <p>Behaviors with a fixed wording, like the tutor switching to step-by-step mode, are checked with exact text matching instead of the model.</p>
+    </section>
+
+    <section class="section flow" aria-labelledby="validation">
+      <h2 id="validation">3. Validating every code</h2>
+      <p>I compared the model's labels with a human gold standard of about 130 messages each for learner and tutor codes, and refined the codes until agreement was substantial.</p>
+      <h3>Reading disagreements, not just scores</h3>
+      <div class="change">
+        <div class="before">
+          <p class="change-label">Initially</p>
+          <p>The model's first runs agreed with humans only weakly on some codes (as low as 0.20). Tuning the prompts alone wasn't going to explain why.</p>
+        </div>
+        <div class="after">
+          <p class="change-label">What changed</p>
+          <p>I read the cases where the model and humans disagreed, one by one. That surfaced three hidden problems that no score pointed to.</p>
+        </div>
+      </div>
+      <ul class="bullets">
+        <li><strong>A silent failure.</strong> The model's hidden reasoning used up its length limit, so about 10% of answers came back empty and were counted as "no." Fixing it also made each message 10 times faster.</li>
+        <li><strong>Mislabeled speakers.</strong> The tutor prompts presented every message as if the student had written it.</li>
+        <li><strong>A biased instruction.</strong> "When in doubt, lean toward yes" had been added to fix low recall that the first bug actually caused. Replacing it with "apply the criteria exactly as written" improved precision on every learner code.</li>
+      </ul>
+      <h3>Fixing the codes themselves</h3>
+      <p>Some disagreements were the codebook's fault, not the model's. I split codes that mixed several behaviors into single-behavior codes, and reconciled about 70 gold labels where identical messages had been coded both ways. Two tutor codes never became reliable. One overlapped with the learner codes, and the other had too fuzzy a boundary. We dropped them instead of reporting numbers we couldn't trust.</p>
+      <p>In the end, every code we kept reached substantial agreement with people. But agreement wasn't the whole story.</p>
+      <div class="insight">
+        <p class="insight-label">Key insight from validation</p>
+        <p class="insight-statement">A good score can hide a real error.</p>
+        <p>"Asks for the solution" agreed with people at 0.87, yet the model sometimes coded a student <em>stating</em> a solution as <em>asking</em> for one, in roughly 5–10% of its positive labels. The gold standard had only 11 examples of that code, so the error was invisible to the statistics. I caught it by reading examples. Scores tell you where to look, and reading tells you what's wrong.</p>
+      </div>
+      <div class="db wide">
+        <p class="db-legend" aria-hidden="true"><span class="db-key first"></span>First run <span class="db-key final"></span>Final run <span class="db-key target"></span>Target (0.6)</p>
+        <h3 class="db-title">Learner codes</h3>
+        <ul class="db-rows">
+          <li title="Asks for the solution: 0.66 first run, 0.87 final run">
+            <span class="db-label">Asks for the solution</span>
+            <span class="db-track" role="img" aria-label="0.66 first run, 0.87 final run"><span class="db-range" style="left:66%;width:21%"></span><span class="db-dot first" style="left:66%"></span><span class="db-dot final" style="left:87%"></span></span>
+            <span class="db-vals">0.66 → <strong>0.87</strong></span>
+          </li>
+          <li title="Repeats input without revising: 0.34 first run, 0.73 final run">
+            <span class="db-label">Repeats input without revising</span>
+            <span class="db-track" role="img" aria-label="0.34 first run, 0.73 final run"><span class="db-range" style="left:34%;width:39%"></span><span class="db-dot first" style="left:34%"></span><span class="db-dot final" style="left:73%"></span></span>
+            <span class="db-vals">0.34 → <strong>0.73</strong></span>
+          </li>
+          <li title="Signals lack of understanding: 0.20 first run, 0.71 final run">
+            <span class="db-label">Signals lack of understanding</span>
+            <span class="db-track" role="img" aria-label="0.20 first run, 0.71 final run"><span class="db-range" style="left:20%;width:51%"></span><span class="db-dot first" style="left:20%"></span><span class="db-dot final" style="left:71%"></span></span>
+            <span class="db-vals">0.20 → <strong>0.71</strong></span>
+          </li>
+          <li title="Asks a follow-up question: 0.44 first run, 0.71 final run">
+            <span class="db-label">Asks a follow-up question</span>
+            <span class="db-track" role="img" aria-label="0.44 first run, 0.71 final run"><span class="db-range" style="left:44%;width:27%"></span><span class="db-dot first" style="left:44%"></span><span class="db-dot final" style="left:71%"></span></span>
+            <span class="db-vals">0.44 → <strong>0.71</strong></span>
+          </li>
+          <li title="Engages with tutor feedback: 0.59 first run, 0.67 final run">
+            <span class="db-label">Engages with tutor feedback</span>
+            <span class="db-track" role="img" aria-label="0.59 first run, 0.67 final run"><span class="db-range" style="left:59%;width:8%"></span><span class="db-dot first" style="left:59%"></span><span class="db-dot final" style="left:67%"></span></span>
+            <span class="db-vals">0.59 → <strong>0.67</strong></span>
+          </li>
+        </ul>
+        <div class="db-axis" aria-hidden="true"><span class="db-axis-track"><span style="left:0%">0</span><span style="left:20%">0.2</span><span style="left:40%">0.4</span><span style="left:60%">0.6</span><span style="left:80%">0.8</span><span style="left:100%">1.0</span></span></div>
+        <details>
+          <summary>Show learner codes as a table</summary>
+          <table>
+            <thead><tr><th scope="col">Learner code</th><th scope="col">First run</th><th scope="col">Final run</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Asks for the solution</th><td>0.66</td><td>0.87</td></tr>
+              <tr><th scope="row">Repeats input without revising</th><td>0.34</td><td>0.73</td></tr>
+              <tr><th scope="row">Signals lack of understanding</th><td>0.20</td><td>0.71</td></tr>
+              <tr><th scope="row">Asks a follow-up question</th><td>0.44</td><td>0.71</td></tr>
+              <tr><th scope="row">Engages with tutor feedback</th><td>0.59</td><td>0.67</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <h3 class="db-title">Tutor codes</h3>
+        <ul class="db-rows">
+          <li title="Switches to step-by-step mode: 1.00 (rule-based, no first run)">
+            <span class="db-label">Switches to step-by-step mode</span>
+            <span class="db-track" role="img" aria-label="1.00 (rule-based, no first run)"><span class="db-dot final" style="left:100%"></span></span>
+            <span class="db-vals">rule-based · <strong>1.00</strong></span>
+          </li>
+          <li title="Offers encouragement: 0.34 first run, 0.83 final run">
+            <span class="db-label">Offers encouragement</span>
+            <span class="db-track" role="img" aria-label="0.34 first run, 0.83 final run"><span class="db-range" style="left:34%;width:49%"></span><span class="db-dot first" style="left:34%"></span><span class="db-dot final" style="left:83%"></span></span>
+            <span class="db-vals">0.34 → <strong>0.83</strong></span>
+          </li>
+          <li title="Gives the answer directly: 0.66 first run, 0.77 final run">
+            <span class="db-label">Gives the answer directly</span>
+            <span class="db-track" role="img" aria-label="0.66 first run, 0.77 final run"><span class="db-range" style="left:66%;width:11%"></span><span class="db-dot first" style="left:66%"></span><span class="db-dot final" style="left:77%"></span></span>
+            <span class="db-vals">0.66 → <strong>0.77</strong></span>
+          </li>
+          <li title="Affirms a correct answer: 0.77 first run, 0.77 final run">
+            <span class="db-label">Affirms a correct answer</span>
+            <span class="db-track" role="img" aria-label="0.77 first run, 0.77 final run"><span class="db-range" style="left:77%;width:0%"></span><span class="db-dot first" style="left:77%"></span><span class="db-dot final" style="left:77%"></span></span>
+            <span class="db-vals">0.77 → <strong>0.77</strong></span>
+          </li>
+          <li title="Prompts the learner to engage: 0.29 first run, 0.73 final run">
+            <span class="db-label">Prompts the learner to engage</span>
+            <span class="db-track" role="img" aria-label="0.29 first run, 0.73 final run"><span class="db-range" style="left:29%;width:44%"></span><span class="db-dot first" style="left:29%"></span><span class="db-dot final" style="left:73%"></span></span>
+            <span class="db-vals">0.29 → <strong>0.73</strong></span>
+          </li>
+          <li title="Reviews rules and concepts: 0.17 first run, 0.67 final run">
+            <span class="db-label">Reviews rules and concepts</span>
+            <span class="db-track" role="img" aria-label="0.17 first run, 0.67 final run"><span class="db-range" style="left:17%;width:50%"></span><span class="db-dot first" style="left:17%"></span><span class="db-dot final" style="left:67%"></span></span>
+            <span class="db-vals">0.17 → <strong>0.67</strong></span>
+          </li>
+          <li title="Uses a scaffolding strategy: 0.30 first run, 0.66 final run">
+            <span class="db-label">Uses a scaffolding strategy</span>
+            <span class="db-track" role="img" aria-label="0.30 first run, 0.66 final run"><span class="db-range" style="left:30%;width:36%"></span><span class="db-dot first" style="left:30%"></span><span class="db-dot final" style="left:66%"></span></span>
+            <span class="db-vals">0.30 → <strong>0.66</strong></span>
+          </li>
+        </ul>
+        <div class="db-axis" aria-hidden="true"><span class="db-axis-track"><span style="left:0%">0</span><span style="left:20%">0.2</span><span style="left:40%">0.4</span><span style="left:60%">0.6</span><span style="left:80%">0.8</span><span style="left:100%">1.0</span></span></div>
+        <details>
+          <summary>Show tutor codes as a table</summary>
+          <table>
+            <thead><tr><th scope="col">Tutor code</th><th scope="col">First run</th><th scope="col">Final run</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Switches to step-by-step mode</th><td>—</td><td>1.00</td></tr>
+              <tr><th scope="row">Offers encouragement</th><td>0.34</td><td>0.83</td></tr>
+              <tr><th scope="row">Gives the answer directly</th><td>0.66</td><td>0.77</td></tr>
+              <tr><th scope="row">Affirms a correct answer</th><td>0.77</td><td>0.77</td></tr>
+              <tr><th scope="row">Prompts the learner to engage</th><td>0.29</td><td>0.73</td></tr>
+              <tr><th scope="row">Reviews rules and concepts</th><td>0.17</td><td>0.67</td></tr>
+              <tr><th scope="row">Uses a scaffolding strategy</th><td>0.30</td><td>0.66</td></tr>
+            </tbody>
+          </table>
+        </details>
+        <p class="db-note">Agreement is Cohen's kappa against a human gold standard. "Switches to step-by-step mode" follows a fixed wording, so it's checked with exact text matching instead of the model. Three more tutor codes didn't make it. One stayed exploratory because it had too few examples to score reliably, and two were dropped.</p>
+      </div>
+    </section>
+
+    <section class="section band flow" aria-labelledby="analysis">
+      <h2 id="analysis">4. Analysis and synthesis</h2>
+      <p>With the corpus coded, I reshaped it into <strong>transition states</strong>. Each one is a learner message, the tutor's reply, and the learner's next message. Comparing transitions that start in the same place but end differently shows which tutor moves come right before a stuck learner re-engages.</p>
+
+      <figure class="wide">
+        <div class="tg" role="img" aria-label="Two transition states side by side. Both start with a negative learner message followed by a tutor response. On the left the learner's next message is negative again; on the right it is positive.">
+          <div class="tg-col">
+            <p class="tg-box neg">Negative learner message</p>
+            <p class="tg-arrow" aria-hidden="true">↓</p>
+            <p class="tg-box tut">Tutor response</p>
+            <p class="tg-arrow" aria-hidden="true">↓</p>
+            <p class="tg-box neg">Negative learner message</p>
+            <p class="tg-label">Stayed stuck</p>
+          </div>
+          <div class="tg-col">
+            <p class="tg-box neg">Negative learner message</p>
+            <p class="tg-arrow" aria-hidden="true">↓</p>
+            <p class="tg-box tut">Tutor response</p>
+            <p class="tg-arrow" aria-hidden="true">↓</p>
+            <p class="tg-box pos">Positive learner message</p>
+            <p class="tg-label">Moved forward</p>
+          </div>
+        </div>
+        <figcaption>A transition state shows what the learner did, how the tutor replied, and what the learner did next. We compared tutor responses across these two outcomes.</figcaption>
+      </figure>
+
+      <p>Here's what that looks like with real codes on an example exchange.</p>
+
+      <figure class="wide">
+        <div class="ts" data-ts>
+          <div class="ts-start">
+            <p class="ts-who">Learner</p>
+            <p class="ts-bubble learner">i dont get it</p>
+            <p class="ts-code neg">Signals lack of understanding · negative</p>
+          </div>
+          <div class="ts-choose" role="group" aria-label="Choose how the tutor replies" hidden>
+            <p class="ts-arrow" aria-hidden="true">↓</p>
+            <p class="ts-branch">Pick the tutor's reply</p>
+            <div class="ts-buttons">
+              <button type="button" class="ts-btn" data-path="prompt" aria-pressed="true">Prompt a next step</button>
+              <button type="button" class="ts-btn" data-path="answer" aria-pressed="false">Give the answer</button>
+            </div>
+          </div>
+          <div class="ts-paths" aria-live="polite">
+            <div class="ts-path" data-path="prompt">
+              <p class="ts-arrow" aria-hidden="true">↓</p>
+              <p class="ts-branch ts-static">If the tutor prompts a next step</p>
+              <p class="ts-who">Tutor</p>
+              <p class="ts-bubble tutor">No worries, let's take it one step. What do you get when you plug in x = 3?</p>
+              <p class="ts-code tut">Prompting to engage · Encouragement</p>
+              <p class="ts-arrow" aria-hidden="true">↓</p>
+              <p class="ts-who">Learner</p>
+              <p class="ts-bubble learner">0/0?</p>
+              <p class="ts-code pos">Engaging with tutor · positive</p>
+              <p class="ts-result pos">Negative → Positive</p>
+            </div>
+            <div class="ts-path" data-path="answer">
+              <p class="ts-arrow" aria-hidden="true">↓</p>
+              <p class="ts-branch ts-static">If the tutor gives the answer</p>
+              <p class="ts-who">Tutor</p>
+              <p class="ts-bubble tutor">The limit is 6.</p>
+              <p class="ts-code tut">Direct answering</p>
+              <p class="ts-arrow" aria-hidden="true">↓</p>
+              <p class="ts-who">Learner</p>
+              <p class="ts-bubble learner">ok whats the answer to the next one</p>
+              <p class="ts-code neg">Asking for the solution · negative</p>
+              <p class="ts-result neg">Negative → Negative</p>
+            </div>
+          </div>
+        </div>
+        <figcaption>Try both replies. Each message is coded separately, and the tutor's reply is the only thing that differs. (Invented example, not real student data.)</figcaption>
+      </figure>
+
+      <p>We tracked three families of transitions, each pairing a stuck start with a "stayed stuck" and a "moved forward" ending.</p>
+      <div class="recs wide">
+        <div>
+          <h3>Engagement</h3>
+          <p>Repeats input → repeats again, or → engages with the tutor.<br>Asks for the solution → asks again, or → engages.</p>
+        </div>
+        <div>
+          <h3>Engagement fork</h3>
+          <p>Signals confusion → asks for the solution, or → engages with the tutor.</p>
+        </div>
+        <div>
+          <h3>Progression of understanding</h3>
+          <p>Signals confusion → stays confused, or → asks a follow-up question about what the tutor said.</p>
+        </div>
+      </div>
+      <h3>Not fooling ourselves</h3>
+      <p>The obvious comparison would mislead. Tutors don't respond the same way to every student, so a move can look effective just because of <em>who</em> receives it. I added a ladder of checks and reported which patterns survived each one, including the ones that didn't.</p>
+      <ul class="bullets">
+        <li><strong>Within-student comparisons.</strong> Each learner is compared with their own other moments of struggle, so differences between students can't explain the effect.</li>
+        <li><strong>How long they'd been stuck.</strong> We checked whether a move still helped before a learner was deeply stuck, not just after.</li>
+        <li><strong>The right outcome.</strong> On a mastery platform, nearly everyone eventually completes the task, and giving the answer "helps" completion. So we measured re-engagement and transfer to later problems instead.</li>
+      </ul>
+      <h3>What we found</h3>
+      <p>Struggling learners sometimes cycled between signaling confusion, repeating an input, and asking for the solution. The tutor's next move was the turning point. Direct answers and unclear next steps kept the loop going, while prompting a next step, scaffolding, and encouragement came before learners re-engaged. We turned this into three directions for the tutor.</p>
+      <div class="recs wide">
+        <div>
+          <h3>Intervene early</h3>
+          <p>Respond at the first sign of confusion, before it turns into repetition or answer-seeking.</p>
+        </div>
+        <div>
+          <h3>Guide without taking over</h3>
+          <p>Offer one manageable next step and hold back the full answer while the learner is still trying.</p>
+        </div>
+        <div>
+          <h3>Support recovery</h3>
+          <p>When a learner stays stuck, pair guidance with encouragement and point out what they already have right.</p>
+        </div>
+      </div>
+      <p class="muted">These are evidence-informed directions, not tested changes. Measuring their effect on learning is future work.</p>
+    </section>
+
+    <section class="section flow" aria-labelledby="outcome">
+      <h2 id="outcome">Outcome</h2>
+      <p>Learnvia received four things they can keep using after the project.</p>
+      <ul class="bullets">
+        <li><strong>A validated codebook</strong> for learner and tutor behavior, with a one-page guide for each code.</li>
+        <li><strong>A human review procedure</strong> for checking model labels against people.</li>
+        <li><strong>A local, privacy-safe pipeline</strong> that can re-code new conversations as the tutor changes.</li>
+        <li><strong>Evidence-based directions</strong> for how the tutor should respond to stuck learners.</li>
+      </ul>
+      <div class="insight">
+        <p class="insight-label">Reflection</p>
+        <p class="insight-statement">Evaluating an AI tutor turned out to be a design problem.</p>
+        <p>The hardest part wasn't running the model. It was defining "good help" clearly enough that people and a model could agree on it, and building a process that made it easy to see when they didn't.</p>
+      </div>
+    </section>
+
+    <section class="section band flow" aria-labelledby="next-steps">
+      <h2 id="next-steps">What I'd do next</h2>
+      <ul class="bullets">
+        <li>Check the final codes on a fresh sample, since the definitions were refined against the same examples they were scored on.</li>
+        <li>Test the tutor recommendations in the product and measure their effect on learning, not just on engagement.</li>
+        <li>Design a proper interface for reviewing disagreements. Most of this project's insight came from reading cases side by side in spreadsheets. A tool built for that would make the work faster and easier to share.</li>
+      </ul>
+    </section>
+
+    <section class="section flow">
+      <p class="next"><a href="biomotivate.html">Next case study: Biomotivate →</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner">
+      <p>Designed by me, built with Claude Code.</p>
+      <ul>
+        <li><a href="mailto:irisliu@andrew.cmu.edu">Email</a></li>
+        <li><a href="https://www.linkedin.com/in/iris-liu-258709253">LinkedIn</a></li>
+        <li><a href="https://github.com/liu-iris">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
+  <script>
+    // Transition example: show one tutor reply at a time.
+    document.querySelectorAll('[data-ts]').forEach(function (ts) {
+      var buttons = ts.querySelectorAll('.ts-btn');
+      var paths = ts.querySelectorAll('.ts-path');
+      ts.classList.add('is-js');
+      ts.querySelector('.ts-choose').hidden = false;
+      function show(name) {
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.path === name)); });
+        paths.forEach(function (p) { p.hidden = p.dataset.path !== name; });
+      }
+      buttons.forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.path); }); });
+      show('prompt');
+    });
+
+  </script>
+</body>
+</html>

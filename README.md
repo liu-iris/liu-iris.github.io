@@ -14,14 +14,16 @@ about.html                  About: bio, photo, links
 graphic-design.html         Graphic design gallery
 work/esme.html              ESME case study
 work/dont-let-them-in.html  Don't Let Them In case study
+work/locai.html             LOCAI (LLM evaluation) case study
+work/biomotivate.html       Biomotivate case study
 css/style.css               All styles (colors and sizes are variables at the top)
-images/esme/  images/dlti/  images/graphics/
+images/esme/  images/dlti/  images/biomotivate/  images/locai/  images/graphics/
 resume.pdf                  Linked from the nav on every page
 ```
 
 ## Updating content
 
-- **Text:** edit the HTML directly. Each page is self-contained, so the header and footer are repeated on every page. If you change the nav or footer, change it in all five files.
+- **Text:** edit the HTML directly. Each page is self-contained, so the header and footer are repeated on every page. If you change the nav or footer, change it in every HTML file.
 - **Replace the resume:** overwrite `resume.pdf` with the new file, keeping the same name.
 - **Add a case study card to Home:** in `index.html`, copy one `<li>` inside `<ul class="card-list">` and change the link, image, title, description, and tags.
 - **Add a case study page:** copy `work/esme.html`, then change the title, meta description, metadata row, and sections. Update the "Next case study" links so they form a loop.
@@ -42,7 +44,7 @@ resume.pdf                  Linked from the nav on every page
 
 ### After changing the stylesheet
 
-Every page loads `css/style.css?v=2`. Browsers keep an old copy of the stylesheet, so after editing `css/style.css`, bump the number on all six pages (for example, change `?v=2` to `?v=3` everywhere). Otherwise you and visitors may keep seeing the old styles.
+Every page loads `css/style.css?v=12`. Browsers keep an old copy of the stylesheet, so after editing `css/style.css`, bump the number on every page (for example, change `?v=12` to `?v=13` everywhere). Otherwise you and visitors may keep seeing the old styles.
 
 ### Unfinished text
 
