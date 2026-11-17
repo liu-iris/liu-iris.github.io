@@ -637,7 +637,7 @@ figcaption {
 
 /* A single tall screenshot (e.g. a phone screen), kept narrow */
 .figure-narrow img {
-  max-width: 360px;
+  max-width: min(360px, 100%);
   margin: 0 auto;
 }
 

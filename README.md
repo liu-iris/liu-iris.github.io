@@ -44,7 +44,7 @@ resume.pdf                  Linked from the nav on every page
 
 ### After changing the stylesheet
 
-Every page loads `css/style.css?v=12`. Browsers keep an old copy of the stylesheet, so after editing `css/style.css`, bump the number on every page (for example, change `?v=12` to `?v=13` everywhere). Otherwise you and visitors may keep seeing the old styles.
+Every page loads `css/style.css?v=13`. Browsers keep an old copy of the stylesheet, so after editing `css/style.css`, bump the number on every page (for example, change `?v=13` to `?v=14` everywhere). Otherwise you and visitors may keep seeing the old styles.
 
 ### Unfinished text
 
